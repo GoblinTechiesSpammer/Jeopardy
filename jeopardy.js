@@ -1,3 +1,9 @@
+//Global constant variables, initially hardcoded.
+
+const NUM_CATEGORIES = 6;
+
+
+
 // categories is the main data structure for the app; it looks like this:
 
 //  [
@@ -21,12 +27,28 @@
 let categories = [];
 
 
+
 /** Get NUM_CATEGORIES random category from API.
  *
  * Returns array of category ids
  */
 
-function getCategoryIds() {
+async function getCategoryIds() {
+
+    let response = await axios.get("https://jservice.io/api/categories", {params : {count : 100}});
+    //Don't know how many categories there are otherwise I'd add a random offset
+    //parameter to start the request from a random point in the data and have
+    //acess to ALL of the categories in the api rather than just the first 100.
+
+    console.log(_.shuffle(response.data));
+
+    let categoryIds = _.shuffle(response.data.map(function(item){
+        return item.id;
+    }));
+
+    console.log(categoryIds);
+
+    return categoryIds.slice(0, NUM_CATEGORIES);
 }
 
 /** Return object with data about a category:
