@@ -5,3 +5,24 @@
   #8d2ab5
   #74119c
 */
+
+body {
+  background-color: moccasin;
+}
+
+table {
+  border: 1px solid black;
+  padding: 8px 3px;
+  margin: auto;
+  background-color: #060ce9;
+  border-spacing: 10px 5px;
+}
+
+td {
+  border: 1px solid black;
+  width: 120px;
+  height: 90px;
+  font-size: 16px;
+  text-align: center;
+  background-color: #115ff4;
+}

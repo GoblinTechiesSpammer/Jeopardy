@@ -1,6 +1,7 @@
 //Global constant variables, initially hardcoded.
 
 const NUM_CATEGORIES = 6;
+const NUM_QUESTIONS_PER_CAT = 5;
 
 
 
@@ -33,6 +34,8 @@ let categories = [];
  * Returns array of category ids
  */
 
+//I added "await" to the function because I don't know how I would do it otherwise.
+
 async function getCategoryIds() {
 
     let response = await axios.get("https://jservice.io/api/categories", {params : {count : 100}});
@@ -63,7 +66,11 @@ async function getCategoryIds() {
  *   ]
  */
 
-function getCategory(catId) {
+async function getCategory(catId) {
+    let response = await axios.get("https://jservice.io/api/category", {params : {id : catId}});
+    console.log(response.data);
+
+    return _.pick(response.data, ['title', 'clues']);
 }
 
 /** Fill the HTML table#jeopardy with the categories & cells for questions.
@@ -74,7 +81,23 @@ function getCategory(catId) {
  *   (initally, just show a "?" where the question/answer would go.)
  */
 
-async function fillTable() {
+function fillTable() {
+    $("#jeopardy thead").append("<tr></tr>");
+    for (let i = 0; i < NUM_CATEGORIES; i++) {
+        $("#jeopardy thead tr").append("<td></td>");
+    }
+
+    for (let i = 0; i < NUM_QUESTIONS_PER_CAT; i++) {
+        $("#jeopardy tbody").append("<tr></tr>");
+        for (let j = 0; j < NUM_CATEGORIES; j++) {
+            $("#jeopardy tbody:last-child").append("<td></td>");
+        }
+    }
+
+    for (let td of document.querySelectorAll("tbody td")){          //IDK how to do this with jQuery
+        td.innerText = "?";
+    }
+    
 }
 
 /** Handle clicking on a clue: show the question or answer.
